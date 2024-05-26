@@ -5,27 +5,30 @@ const cors = require('cors');
 const app = express();
 
 let id = 1;
+let clients = [];
+let syns = [];
 
 app.use(cors());
-app.use(bodyParser.json());
+app.use(bodyParser.text());
 app.use(bodyParser.urlencoded({extended: false}));
 
+app.use("/", express.static(__dirname + "/public"));
 app.get('/status', (request, response) => response.json({clients: clients.length}));
 app.post('/syn', addSyn);
 app.get('/events', eventsHandler);
 
 function sendEventsToAll(newSyn) {
-  clients.forEach(client => client.response.write(`data: ${JSON.stringify(newSyn, null, 2)}\n`))
+  clients.forEach(client => client.response.write(`event: ping\ndata: ${newSyn}\n\n`))
 }
 
-async function addSyn(request, response, next) {
+async function addSyn(request, response) {
   const newSyn = request.body;
   syns.push(newSyn);
-  response.json(newSyn)
+  response.send(newSyn)
   return sendEventsToAll(newSyn);
 }
 
-function eventsHandler(request, response, next) {
+function eventsHandler(request, response) {
   const headers = {
     'Content-Type': 'text/event-stream',
     'Connection': 'keep-alive',
@@ -33,7 +36,7 @@ function eventsHandler(request, response, next) {
   };
   response.writeHead(200, headers);
 
-  const data = `data: ${JSON.stringify(syns)}\n\n`;
+  const data = `data: ${syns.join(" * ")}\n\n`;
 
   response.write(data);
 
@@ -53,10 +56,6 @@ function eventsHandler(request, response, next) {
 }
 
 const PORT = 3000;
-
-let clients = [];
-let syns = [];
-
 app.listen(PORT, () => {
   console.log(`Synth Events service listening at http://localhost:${PORT}`)
 })
