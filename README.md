@@ -1,4 +1,1 @@
-curl -X POST \
- -H "Content-Type: text/plain" \
- -d 'xoxo'\
- -s https://synchat.emmasea.com/syn
+To play some notes, open the web page and then run this from the command line: sh demo.sh
