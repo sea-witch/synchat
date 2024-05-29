@@ -6,10 +6,28 @@
   </head>
   <body>
     <button>Close the connection</button>
+    <div id="start">Okay to make noise?</div>
 
     <ul></ul>
 
+    <script src="https://unpkg.com/tone"></script>
     <script>
+			const synth = new Tone.Synth().toDestination();
+      const loopA = new Tone.Loop((time) => {
+      	synth.triggerAttackRelease("C2", "8n", time);
+      }, "4n").start(0);
+
+			function playNote(note) {
+				synth.triggerAttackRelease(note, "8n");
+			}
+
+     const startMessage = document.querySelector("#start");
+      window.addEventListener("keydown", async () => {
+      	await Tone.start();
+        // Tone.getTransport().start();
+        startMessage.innerText = "Audio is ready"
+      });
+
       const button = document.querySelector('button');
       const evtSource = new EventSource('https://synchat.emmasea.com/events');
       // const evtSource = new EventSource('http://localhost:3000/events');
@@ -39,8 +57,10 @@
 
       evtSource.addEventListener("ping", function (e) {
         console.log("got a ping");
+        const note = e.data // e.g. "C4"
+        playNote(note);
         const newElement = document.createElement("li");
-        newElement.innerHTML = "ping: " + e.data;
+        newElement.innerHTML = e.data;
         eventList.appendChild(newElement);
       }, false);
     </script>
