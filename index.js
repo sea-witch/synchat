@@ -18,8 +18,9 @@ app.post('/syn', addSyn);
 app.get('/events', eventsHandler);
 app.get('/reset', resetHandler);
 
-function resetHandler() {
+function resetHandler(_, res) {
   syns = [];
+  res.send("reset syns");
 }
 
 function sendEventsToAll(newSyn) {
