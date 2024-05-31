@@ -16,6 +16,11 @@ app.use("/", express.static(__dirname + "/public"));
 app.get('/status', (request, response) => response.json({clients: clients.length}));
 app.post('/syn', addSyn);
 app.get('/events', eventsHandler);
+app.get('/reset', resetHandler);
+
+function resetHandler() {
+  syns = [];
+}
 
 function sendEventsToAll(newSyn) {
   clients.forEach(client => client.response.write(`event: ping\ndata: ${newSyn}\n\n`))
