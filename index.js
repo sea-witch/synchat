@@ -14,7 +14,7 @@ const pg = `<!doctype html>
 
 app.get('/', (req, res) => {
 	
-  res.send(req.body)
+  res.send(JSON.stringify(req.body))
 })
 
 app.listen(port, () => {
