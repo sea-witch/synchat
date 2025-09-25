@@ -13,8 +13,8 @@ const pg = `<!doctype html>
 </html>`
 
 app.get('/', (req, res) => {
+res.send('ok')
 	
-  res.send(JSON.stringify('blurghhh'))
 })
 
 app.listen(port, () => {
