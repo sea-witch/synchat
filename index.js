@@ -13,7 +13,7 @@ const pg = `<!doctype html>
 </html>`
 
 app.get('/', (req, res) => {
-res.send('ok')
+res.json('ok')
 	
 })
 
