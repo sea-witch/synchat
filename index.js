@@ -7,6 +7,14 @@ const pg = `<!doctype html>
   <head>
     <title>:)</title>
   </head>
+  <style>
+	body {
+		background: hotpink;
+		color: green;
+		font-size: 4rem;
+	} 
+  </style>
+
   <body>
     <p>Ahhhhh.</p>
   </body>
